@@ -1,0 +1,17 @@
+{
+  "search_g": [
+    {
+      "id": 0,
+      "palavra": "ok"
+    }
+  ],
+  "result_g": [
+    {
+      "id": 0,
+      "Data": "Data",
+      "palavra": "Palavra",
+      "posicao": "Posição"
+    }
+  ],
+  "palavr_g": []
+}
