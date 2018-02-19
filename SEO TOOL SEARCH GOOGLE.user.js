@@ -7,6 +7,7 @@
 // @grant        none
 // ==/UserScript==
 
+
 (function() {
     'use strict';
     var keyword;
@@ -15,6 +16,7 @@
     let input_Google              = document.querySelector('#lst-ib');
     let btn_search_Google         = document.querySelector("#_fZl");
     let result_search_Google      = document.querySelectorAll('._Rm');
+
     for(var i=0; i < result_search_Google.length;i++) {
         result_search_Google[i].innerHTML +="<span class='numero'></span> ";
     }
@@ -35,7 +37,9 @@
                 keyword    = JSON.parse(keyword);
                 url        = keyword.url;
                 keyword    = keyword.palavras;
+                keyword    = "Palavras chaves SEO,"+keyword;
                 keyword    = keyword.split(",");
+
                 GET(keyword,ADD,url);
             }
         };
@@ -53,6 +57,7 @@
                 console.log(url);
                 console.log("Lista de Palavras --------------",palavra_posicao);
                 //
+
                 input_Google.value = palavra_posicao[this.responseText];
                 var posi    = document.querySelectorAll('._Rm');
                 for(var i = 0; i < posi.length; i++){
@@ -103,9 +108,10 @@
             return new Promise((resolve, reject)=>{ setTimeout(_=>resolve(), 5000); });
         }
         if(palavra != "undefined"){
-            //callback().then( result=>btn_search_Google.click() );
+            callback().then( result=>btn_search_Google.click() );
         }else{
             console.log(" Fim "+palavra);
+            spawnNotification("SEO TOOL","Estatistica finalizada","http://tesseratoschool.16mb.com/content/uploads/2016/10/logo.png");
             return;
         }
     }
@@ -128,3 +134,43 @@
     }
     LIST(keyword,GET,ADD);POST();ESTATISTIC();
 })();
+
+function notifyMe() {
+  // Let's check if the browser supports notifications
+  if (!("Notification" in window)) {
+    alert("Este navegador não suporta notificações na área de trabalho");
+  }
+
+  // Let's check whether notification permissions have already been granted
+  else if (Notification.permission === "granted") {
+    // If it's okay let's create a notification
+    var notification = new Notification("Estatistica Finalizada!");
+  }
+
+  // Otherwise, we need to ask the user for permission
+  else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+      // If the user accepts, let's create a notification
+      if (permission === "granted") {
+        var notification = new Notification("Estatistica Finalizada!");
+      }
+    });
+  }
+
+  // At last, if the user has denied notifications, and you
+  // want to be respectful there is no need to bother them any more.
+}
+
+Notification.requestPermission();
+
+function spawnNotification(titulo,corpo,icone) {
+  var opcoes = {
+      icon:icone,
+      body: corpo
+  }
+
+  var n = new Notification(titulo,opcoes);
+}
+//notifyMe()
+chrome.runtime.sendMessage("running");
+
